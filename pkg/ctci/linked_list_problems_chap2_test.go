@@ -14,7 +14,7 @@ func TestLinkedList_RemoveDuplicates(t *testing.T) {
 		fields fields
 	}{
 		{
-			name:   "with empty head",
+			name:   "with empty Head",
 			fields: fields{head: nil},
 		},
 	}

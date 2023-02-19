@@ -18,7 +18,7 @@ func Test_spiralMatrixIII(t *testing.T) {
 		want [][]int
 	}{
 		{
-			name: "first test case",
+			name: "Head test case",
 			args: args{
 				rows:   1,
 				cols:   4,

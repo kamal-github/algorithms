@@ -15,7 +15,7 @@ func Test_getMaximumGold(t *testing.T) {
 		want int
 	}{
 		{
-			name: "first test - 3*5 matrix",
+			name: "Head test - 3*5 matrix",
 			args: args{
 				grid: [][]int{
 					{1, 0, 7},

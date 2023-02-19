@@ -14,25 +14,25 @@ func LongestCommonPrefix(strs []string) string {
 	if len(strs) == 0 {
 		return ""
 	}
-	
+
 	baseStr := strs[0]
-	
+
 	if len(strs) == 1 {
 		return baseStr
 	}
-	
+
 	var lcp string
-	
+
 	for i, ch := range baseStr {
-		for _, str := range strs {
+		for _, str := range strs[1:] {
 			if i >= len(str) || uint8(ch) != str[i] {
 				return lcp
 			}
 		}
-		
+
 		lcp += string(ch)
 	}
-	
+
 	return lcp
 }
 

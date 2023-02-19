@@ -6,8 +6,8 @@ import (
 )
 
 type Node struct {
-	value interface{}
-	next *Node
+	Val  interface{}
+	Next *Node
 }
 
 type LinkedList struct {
@@ -15,7 +15,7 @@ type LinkedList struct {
 }
 
 func (ll *LinkedList) InsertBeg(v interface{}) {
-	newNode := &Node{value:v, next: ll.first}
+	newNode := &Node{Val: v, Next: ll.first}
 	ll.first = newNode
 }
 
@@ -26,8 +26,8 @@ func (ll *LinkedList) Remove(v interface{}) error {
 	}
 
 	if ll.first != nil {
-		if ll.first.value == v {
-			ll.first = ll.first.next
+		if ll.first.Val == v {
+			ll.first = ll.first.Next
 			return nil
 		}
 	}
@@ -35,13 +35,13 @@ func (ll *LinkedList) Remove(v interface{}) error {
 	node := ll.first
 	prevNode := node
 	for node != nil {
-		if v.(int) == node.value.(int) {
+		if v.(int) == node.Val.(int) {
 			fmt.Println("matched")
-			prevNode.next = node.next
+			prevNode.Next = node.Next
 			return nil
 		}
 		prevNode = node
-		node = node.next
+		node = node.Next
 	}
 
 	return errors.New("could not remove as candidate not found")
@@ -51,10 +51,10 @@ func (ll *LinkedList) Remove(v interface{}) error {
 func (ll *LinkedList) Find(v interface{}) (bool, error) {
 	node := ll.first
 	for node != nil {
-		if v == node.value {
+		if v == node.Val {
 			return true, nil
 		}
-		node = node.next
+		node = node.Next
 	}
 	return false, errors.New("could not find")
 }
@@ -62,8 +62,8 @@ func (ll *LinkedList) Find(v interface{}) (bool, error) {
 func (ll *LinkedList) loopOver() {
 	node := ll.first
 	for node != nil {
-		fmt.Println(node.value)
-		node = node.next
+		fmt.Println(node.Val)
+		node = node.Next
 	}
 }
 

@@ -1,8 +1,12 @@
 package main
 
+import "fmt"
+
 type level int
 
 func maxLevelSum(root *TreeNode) int {
+	isEven := (3+5)%2 == 0
+	fmt.Println(isEven)
 	sumAtLevel := make(map[level]int)
 	maxLevel := 1
 
