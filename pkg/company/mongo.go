@@ -3,9 +3,6 @@ package main
 import (
 	"container/heap"
 	"fmt"
-	"sort"
-	"strconv"
-	"strings"
 )
 
 /*
@@ -34,61 +31,70 @@ import (
 // To execute Go code, please declare a func main() in a package "main"
 
 type PlayerScore struct {
-	name  string
-	score int
+	playerName string
+	score      int // priority
 }
 
-// An IntHeap is a min-heap of ints.
-type IntHeap []PlayerScore
+type TopLeaderboard []PlayerScore
 
-func (h IntHeap) Len() int           { return len(h) }
-func (h IntHeap) Less(i, j int) bool { return h[i].score < h[j].score }
-func (h IntHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (s TopLeaderboard) Len() int           { return len(s) }
+func (s TopLeaderboard) Less(i, j int) bool { return s[i].score > s[j].score }
+func (s TopLeaderboard) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 
-func (h *IntHeap) Push(x interface{}) {
-	// Push and Pop use pointer receivers because they modify the slice's length,
-	// not just its contents.
-	*h = append(*h, x.(PlayerScore))
+func (s *TopLeaderboard) Push(p any) {
+	*s = append(*s, p.(PlayerScore))
 }
 
-func (h *IntHeap) Pop() interface{} {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
+func (s *TopLeaderboard) Pop() any {
+	n := len(*s)
+	last := (*s)[n-1]
+	*s = (*s)[0 : n-1]
+	return last
 }
 
 func main() {
-	
-	const MaxEntries = 6
-	input := []string{"Alice 50", "Joe 20", "Ben 65", "Alice 55", "Alice 65", "Joe 30", "Charlie 21"}
-	
-	m := make(map[string]int)
-	
-	h := &IntHeap{}
-	heap.Init(h)
-	
-	for _, str := range input {
-		nameScores := strings.Split(str, " ")
-		
-		n := nameScores[0]
-		sc, _ := strconv.Atoi(nameScores[1])
-		
-		if index, ok := m[n]; ok && (-sc) < (*h)[index].score {
-			(*h)[index].score = -sc
-		} else {
-			heap.Push(h, PlayerScore{name: n, score: -sc})
-			m[n] = h.Len() - 1
-		}
-		
+	scores := []PlayerScore{
+		{
+			playerName: "A",
+			score:      20,
+		},
+		{
+			playerName: "B",
+			score:      30,
+		},
+		{
+			playerName: "D",
+			score:      310,
+		},
+		{
+			playerName: "C",
+			score:      10,
+		},
 	}
-	
-	for i := 0; i < MaxEntries; i++ {
-		ps := heap.Pop(h).(PlayerScore)
-		fmt.Println(ps.name, -ps.score)
-	}
-	
-	sort.SliceStable()
-}
 
+	highestScores := make(map[string]int)
+	for _, s := range scores {
+		if oldScore, ok := highestScores[s.playerName]; ok && s.score > oldScore {
+			highestScores[s.playerName] = s.score
+			continue
+		}
+		highestScores[s.playerName] = s.score
+	}
+
+	topLeaderboard := make(TopLeaderboard, 0)
+	heap.Init(&topLeaderboard)
+
+	for pn, ps := range highestScores {
+		heap.Push(&topLeaderboard, PlayerScore{
+			playerName: pn,
+			score:      ps,
+		})
+	}
+
+	fmt.Println(topLeaderboard)
+
+	fmt.Print(heap.Pop(&topLeaderboard))
+	fmt.Print(heap.Pop(&topLeaderboard))
+	fmt.Print(heap.Pop(&topLeaderboard))
+	fmt.Print(heap.Pop(&topLeaderboard))
+}
